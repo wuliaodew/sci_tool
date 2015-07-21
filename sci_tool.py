@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sci_tool.ui'
 #
-# Created: Mon Jul 20 17:48:13 2015
+# Created: Tue Jul 21 13:42:26 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -60,6 +60,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setSizeConstraint(QtGui.QLayout.SetMaximumSize)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
         self.distext = QtGui.QTabWidget(self.scitooltab)
+        self.distext.setEnabled(True)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -68,6 +69,9 @@ class Ui_MainWindow(object):
         self.distext.setMaximumSize(QtCore.QSize(194, 16777215))
         self.distext.setTabPosition(QtGui.QTabWidget.North)
         self.distext.setTabShape(QtGui.QTabWidget.Triangular)
+        self.distext.setUsesScrollButtons(True)
+        self.distext.setTabsClosable(False)
+        self.distext.setMovable(False)
         self.distext.setObjectName(_fromUtf8("distext"))
         self.dishextext = QtGui.QWidget()
         self.dishextext.setMouseTracking(False)
@@ -85,6 +89,10 @@ class Ui_MainWindow(object):
         self.dishex.setSizePolicy(sizePolicy)
         self.dishex.setMaximumSize(QtCore.QSize(189, 16777215))
         self.dishex.setSizeIncrement(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Consolas"))
+        font.setPointSize(11)
+        self.dishex.setFont(font)
         self.dishex.setReadOnly(True)
         self.dishex.setObjectName(_fromUtf8("dishex"))
         self.verticalLayout_7.addWidget(self.dishex)
@@ -101,6 +109,10 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.distring.sizePolicy().hasHeightForWidth())
         self.distring.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Consolas"))
+        font.setPointSize(11)
+        self.distring.setFont(font)
         self.distring.setReadOnly(True)
         self.distring.setObjectName(_fromUtf8("distring"))
         self.verticalLayout_10.addWidget(self.distring)
@@ -145,6 +157,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setStretch(2, 1)
         self.verticalLayout_5.addLayout(self.horizontalLayout_8)
         self.textEdit = QtGui.QTextEdit(self.Protocoltab)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Consolas"))
+        font.setPointSize(11)
+        self.textEdit.setFont(font)
         self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName(_fromUtf8("textEdit"))
         self.verticalLayout_5.addWidget(self.textEdit)

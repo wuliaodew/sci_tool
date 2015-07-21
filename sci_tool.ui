@@ -92,7 +92,7 @@
                <enum>QTabWidget::Triangular</enum>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <property name="usesScrollButtons">
                <bool>true</bool>
@@ -140,6 +140,12 @@
                     <height>0</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <family>Consolas</family>
+                    <pointsize>11</pointsize>
+                   </font>
+                  </property>
                   <property name="readOnly">
                    <bool>true</bool>
                   </property>
@@ -165,6 +171,12 @@
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Consolas</family>
+                    <pointsize>11</pointsize>
+                   </font>
                   </property>
                   <property name="readOnly">
                    <bool>true</bool>
@@ -261,6 +273,12 @@
                 </item>
                 <item>
                  <widget class="QTextEdit" name="textEdit">
+                  <property name="font">
+                   <font>
+                    <family>Consolas</family>
+                    <pointsize>11</pointsize>
+                   </font>
+                  </property>
                   <property name="readOnly">
                    <bool>true</bool>
                   </property>
