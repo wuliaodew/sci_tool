@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sci_tool.ui'
 #
-# Created: Tue Jul 21 13:42:26 2015
+# Created: Wed Jul 22 14:31:17 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -93,6 +93,7 @@ class Ui_MainWindow(object):
         font.setFamily(_fromUtf8("Consolas"))
         font.setPointSize(11)
         self.dishex.setFont(font)
+        self.dishex.setMouseTracking(True)
         self.dishex.setReadOnly(True)
         self.dishex.setObjectName(_fromUtf8("dishex"))
         self.verticalLayout_7.addWidget(self.dishex)
