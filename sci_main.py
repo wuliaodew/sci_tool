@@ -19,7 +19,7 @@ SERIAL_STOPBIT_ARRAY = (serial.STOPBITS_ONE, serial.STOPBITS_ONE_POINT_FIVE, ser
 SERIAL_CHECKBIT_ARRAY = (serial.PARITY_NONE, serial.PARITY_EVEN, serial.PARITY_ODD , serial.PARITY_MARK, serial.PARITY_SPACE)
 
 
-class SciWidgetClass( QtCore.QObject):
+class SciSignalClass( QtCore.QObject):
     SciReceive =  QtCore.pyqtSignal()
 
 class Sci_UiCtl(sci_tool.Ui_MainWindow):
@@ -33,8 +33,8 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.sciopenButton.connect(self.sciopenButton, QtCore.SIGNAL('clicked()'), self.SciOpenButton_Click)#connect button click func
         self.test = 0
 
-        self.scirec_signal = SciWidgetClass()
-        self.scirec_signal.SciReceive.connect(self.SciWinReFresh)
+        self.scirec_signal = SciSignalClass()#添加一个串口数据接收成功信号
+        self.scirec_signal.SciReceive.connect(self.SciWinReFresh)#产生信号连接槽
       #  self.scirec_signal.connect(self.scirec_signal, QtCore.SIGNAL('SCI RECEIVE'), self.SciWinReFresh())
 
         try:
@@ -84,7 +84,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             self.portcomtext.setEnabled(True)
             self.portstatus_flag = False
 
-    @QtCore.pyqtSlot()
+    @QtCore.pyqtSlot()#串口数据刷新槽
     def SciWinReFresh(self):
         self.dishex.append('test')
 
@@ -93,7 +93,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
     def SciReadData(self):#deal sci data
         while True:
             if self.portstatus_flag == True:
-                self.scirec_signal.SciReceive.emit()
+                self.scirec_signal.SciReceive.emit()#发送接收数据的信号
                 time.sleep(0.1)
             else:
                 time.sleep(1)
