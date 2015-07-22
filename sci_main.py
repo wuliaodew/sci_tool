@@ -19,6 +19,9 @@ SERIAL_STOPBIT_ARRAY = (serial.STOPBITS_ONE, serial.STOPBITS_ONE_POINT_FIVE, ser
 SERIAL_CHECKBIT_ARRAY = (serial.PARITY_NONE, serial.PARITY_EVEN, serial.PARITY_ODD , serial.PARITY_MARK, serial.PARITY_SPACE)
 
 
+class SciWidgetClass( QtCore.QObject):
+    SciReceive =  QtCore.pyqtSignal()
+
 class Sci_UiCtl(sci_tool.Ui_MainWindow):
     def __init__(self,MainWindow):
         super(sci_tool.Ui_MainWindow, self).__init__()
@@ -30,9 +33,12 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.sciopenButton.connect(self.sciopenButton, QtCore.SIGNAL('clicked()'), self.SciOpenButton_Click)#connect button click func
         self.test = 0
 
+        self.scirec_signal = SciWidgetClass()
+        self.scirec_signal.SciReceive.connect(self.SciWinReFresh)
+      #  self.scirec_signal.connect(self.scirec_signal, QtCore.SIGNAL('SCI RECEIVE'), self.SciWinReFresh())
+
         try:
             self.scithread = threading.Thread(target=self.SciReadData)
-           # self.scithread = threading.Timer(1,self.SciReadData)
             self.scithread.setDaemon(True)
             self.scithread.start()
         except:
@@ -78,12 +84,21 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             self.portcomtext.setEnabled(True)
             self.portstatus_flag = False
 
+    @QtCore.pyqtSlot()
+    def SciWinReFresh(self):
+        self.dishex.append('test')
+
+###############################################
+#数据接收线程
     def SciReadData(self):#deal sci data
         while True:
             if self.portstatus_flag == True:
+                self.scirec_signal.SciReceive.emit()
                 time.sleep(0.1)
             else:
                 time.sleep(1)
+
+
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
