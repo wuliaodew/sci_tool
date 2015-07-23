@@ -211,7 +211,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             fname.write(self.distring.toPlainText())
         elif  self.distext.currentIndex() == 2:
              fname.write(self.disprotocol.toPlainText())
-            
+
         fname.close()
 
 ###############################################
