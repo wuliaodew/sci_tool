@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sci_tool.ui'
 #
-# Created: Wed Jul 22 14:31:17 2015
+# Created: Thu Jul 23 09:49:19 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -80,20 +80,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.setSpacing(1)
         self.verticalLayout_7.setMargin(0)
         self.verticalLayout_7.setObjectName(_fromUtf8("verticalLayout_7"))
-        self.dishex = QtGui.QTextEdit(self.dishextext)
-        self.dishex.setEnabled(True)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.dishex.sizePolicy().hasHeightForWidth())
-        self.dishex.setSizePolicy(sizePolicy)
-        self.dishex.setMaximumSize(QtCore.QSize(189, 16777215))
-        self.dishex.setSizeIncrement(QtCore.QSize(0, 0))
+        self.dishex = QtGui.QPlainTextEdit(self.dishextext)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Consolas"))
         font.setPointSize(11)
         self.dishex.setFont(font)
-        self.dishex.setMouseTracking(True)
         self.dishex.setReadOnly(True)
         self.dishex.setObjectName(_fromUtf8("dishex"))
         self.verticalLayout_7.addWidget(self.dishex)
@@ -104,12 +95,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.setSpacing(1)
         self.verticalLayout_10.setMargin(0)
         self.verticalLayout_10.setObjectName(_fromUtf8("verticalLayout_10"))
-        self.distring = QtGui.QTextEdit(self.disstringtext)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.distring.sizePolicy().hasHeightForWidth())
-        self.distring.setSizePolicy(sizePolicy)
+        self.distring = QtGui.QPlainTextEdit(self.disstringtext)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Consolas"))
         font.setPointSize(11)
@@ -157,14 +143,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setStretch(1, 1)
         self.horizontalLayout_8.setStretch(2, 1)
         self.verticalLayout_5.addLayout(self.horizontalLayout_8)
-        self.textEdit = QtGui.QTextEdit(self.Protocoltab)
+        self.disprotocol = QtGui.QPlainTextEdit(self.Protocoltab)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Consolas"))
         font.setPointSize(11)
-        self.textEdit.setFont(font)
-        self.textEdit.setReadOnly(True)
-        self.textEdit.setObjectName(_fromUtf8("textEdit"))
-        self.verticalLayout_5.addWidget(self.textEdit)
+        self.disprotocol.setFont(font)
+        self.disprotocol.setReadOnly(True)
+        self.disprotocol.setObjectName(_fromUtf8("disprotocol"))
+        self.verticalLayout_5.addWidget(self.disprotocol)
         self.distext.addTab(self.Protocoltab, _fromUtf8(""))
         self.verticalLayout_3.addWidget(self.distext)
         self.verticalLayout_2.addLayout(self.verticalLayout_3)
@@ -696,5 +682,13 @@ class Ui_MainWindow(object):
         self.debugtab.setTabText(self.debugtab.indexOf(self.matplottab), _translate("MainWindow", "Dataplot", None))
         self.debugtab.setTabText(self.debugtab.indexOf(self.motortab), _translate("MainWindow", "Instaspin ", None))
         self.maintabwidget.setTabText(self.maintabwidget.indexOf(self.scitooltab), _translate("MainWindow", "SciTool", None))
+        self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">电机串口调试工具</span></p>\n"
+"<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Instaspin Foc</span>交流群:<span style=\" text-decoration: underline;\">335663930</span><span style=\" font-weight:600;\"> Author</span>@<span style=\" text-decoration: underline;\">nixianmin</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"right\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.maintabwidget.setTabText(self.maintabwidget.indexOf(self.about_tab), _translate("MainWindow", "About", None))
 

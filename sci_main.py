@@ -43,6 +43,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             self.scithread.start()
         except:
              QtGui.QMessageBox.warning(None, '错误警告',"SCI读取线程未创建", QtGui.QMessageBox.Ok)
+             sys.exit()#创建进程异常，结束程序
 
     def SciOpenButton_Click(self):
          clickstatus = self.sciopenButton.isChecked()
@@ -86,7 +87,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
 
     @QtCore.pyqtSlot()#串口数据刷新槽
     def SciWinReFresh(self):
-        self.dishex.append('test')
+        self.dishex.appendPlainText('test')
 
 ###############################################
 #数据接收线程
@@ -94,7 +95,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         while True:
             if self.portstatus_flag == True:
                 self.scirec_signal.SciReceive.emit()#发送接收数据的信号
-                time.sleep(0.1)
+                time.sleep(0.02)
             else:
                 time.sleep(1)
 
