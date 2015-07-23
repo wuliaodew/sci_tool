@@ -92,7 +92,7 @@
                <enum>QTabWidget::Triangular</enum>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <property name="usesScrollButtons">
                <bool>true</bool>
@@ -929,9 +929,9 @@
                  <number>1</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_9">
+                 <widget class="QPushButton" name="sendclr_Button">
                   <property name="text">
-                   <string>Send Data</string>
+                   <string>清空数据</string>
                   </property>
                  </widget>
                 </item>

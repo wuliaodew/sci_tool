@@ -32,6 +32,8 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self._serial = serial.Serial()#init serial class
         self.sciopenButton.connect(self.sciopenButton, QtCore.SIGNAL('clicked()'), self.SciOpenButton_Click)#connect button click func
         self.clrcontentbutton.connect(self.clrcontentbutton, QtCore.SIGNAL('clicked()'), self.ClrButtonProcess)
+        self.mainsend_Button.connect(self.mainsend_Button, QtCore.SIGNAL('clicked()'), self.MainSendButtonProcess)
+        self.sendclr_Button.connect(self.sendclr_Button,  QtCore.SIGNAL('clicked()'), self.ClrSendButtonProcess)
         self.test = 0
         self.recstr = str
 
@@ -96,6 +98,9 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         else:
             self.disprotocol.clear()
 
+    def ClrSendButtonProcess(self):
+        self.mainsend_Edit.clear()
+
 
     def HexShow(self,strargv):#转换陈十六进制格式显示
         restr = ''
@@ -113,6 +118,17 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         else:
             pass
 
+
+    def MainSendButtonProcess(self):
+        if self.portstatus_flag == True:
+            if self.char_radioButton.isChecked():
+                self._serial.write(self.mainsend_Edit.toPlainText().encode())
+            else:
+                sendstr = self.mainsend_Edit.toPlainText()
+                try:
+                    self._serial.write( bytearray.fromhex( sendstr.replace('0x','')))
+                except:
+                     QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
 ###############################################
 #数据接收线程
     def SciReadData(self):#deal sci data

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sci_tool.ui'
 #
-# Created: Thu Jul 23 11:21:49 2015
+# Created: Thu Jul 23 13:29:09 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -112,10 +112,14 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.checkBox = QtGui.QCheckBox(self.Protocoltab)
+        self.checkBox.setObjectName(_fromUtf8("checkBox"))
+        self.horizontalLayout_2.addWidget(self.checkBox)
         self.label = QtGui.QLabel(self.Protocoltab)
         self.label.setObjectName(_fromUtf8("label"))
         self.horizontalLayout_2.addWidget(self.label)
         self.framehead_edit = QtGui.QLineEdit(self.Protocoltab)
+        self.framehead_edit.setMaximumSize(QtCore.QSize(30, 16777215))
         self.framehead_edit.setMaxLength(2)
         self.framehead_edit.setCursorPosition(2)
         self.framehead_edit.setObjectName(_fromUtf8("framehead_edit"))
@@ -124,6 +128,7 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.horizontalLayout_2.addWidget(self.label_2)
         self.framenum_edit = QtGui.QLineEdit(self.Protocoltab)
+        self.framenum_edit.setMaximumSize(QtCore.QSize(30, 16777215))
         self.framenum_edit.setObjectName(_fromUtf8("framenum_edit"))
         self.horizontalLayout_2.addWidget(self.framenum_edit)
         self.verticalLayout_5.addLayout(self.horizontalLayout_2)
@@ -391,9 +396,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9 = QtGui.QHBoxLayout()
         self.horizontalLayout_9.setSpacing(1)
         self.horizontalLayout_9.setObjectName(_fromUtf8("horizontalLayout_9"))
-        self.label_9 = QtGui.QLabel(self.sendtab)
-        self.label_9.setObjectName(_fromUtf8("label_9"))
-        self.horizontalLayout_9.addWidget(self.label_9)
+        self.sendclr_Button = QtGui.QPushButton(self.sendtab)
+        self.sendclr_Button.setObjectName(_fromUtf8("sendclr_Button"))
+        self.horizontalLayout_9.addWidget(self.sendclr_Button)
         spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_9.addItem(spacerItem5)
         self.label_10 = QtGui.QLabel(self.sendtab)
@@ -627,6 +632,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "DebugTool@nixianmin", None))
         self.distext.setTabText(self.distext.indexOf(self.dishextext), _translate("MainWindow", "Hex", None))
         self.distext.setTabText(self.distext.indexOf(self.disstringtext), _translate("MainWindow", "String", None))
+        self.checkBox.setText(_translate("MainWindow", "使能", None))
         self.label.setText(_translate("MainWindow", "帧头：", None))
         self.framehead_edit.setInputMask(_translate("MainWindow", "HH; ", None))
         self.framehead_edit.setText(_translate("MainWindow", "FF", None))
@@ -678,7 +684,7 @@ class Ui_MainWindow(object):
         self.stopbitcombo.setItemText(1, _translate("MainWindow", "1.5bit", None))
         self.stopbitcombo.setItemText(2, _translate("MainWindow", "2bit", None))
         self.sciopenButton.setText(_translate("MainWindow", "打开", None))
-        self.label_9.setText(_translate("MainWindow", "Send Data", None))
+        self.sendclr_Button.setText(_translate("MainWindow", "清空数据", None))
         self.label_10.setText(_translate("MainWindow", "数据格式:", None))
         self.char_radioButton.setText(_translate("MainWindow", "Char", None))
         self.hex_radioButton.setText(_translate("MainWindow", "Hex", None))
