@@ -40,6 +40,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.cmd3sned_Button.connect(self.cmd3sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd3SendButtonProcess)
         self.cmd4sned_Button.connect(self.cmd4sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd4SendButtonProcess)
         self.cmd5sned_Button.connect(self.cmd5sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd5SendButtonProcess)
+        self.savecontentbutton.connect(self.savecontentbutton, QtCore.SIGNAL('clicked()'), self.SaveRecButtonProcess)
 
 
         self.recstr = str#串口接收字符串
@@ -200,6 +201,19 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                 self.SerialSend(bytearray.fromhex( sendstr.replace('0x','')))
             except:
                 QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
+
+    def SaveRecButtonProcess(self):
+        filename = QtGui.QFileDialog.getSaveFileName(self.savecontentbutton, 'Save File', '.',"Text file(*.txt);;All file(*.*)")
+        fname = open(filename, 'w')
+        if self.distext.currentIndex() == 0:
+            fname.write(self.dishex.toPlainText())
+        elif self.distext.currentIndex() == 1:
+            fname.write(self.distring.toPlainText())
+        elif  self.distext.currentIndex() == 2:
+             fname.write(self.disprotocol.toPlainText())
+            
+        fname.close()
+
 ###############################################
 #数据接收线程
     def SciReadData(self):#deal sci data
