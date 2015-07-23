@@ -35,8 +35,14 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.mainsend_Button.connect(self.mainsend_Button, QtCore.SIGNAL('clicked()'), self.MainSendButtonProcess)
         self.sendclr_Button.connect(self.sendclr_Button, QtCore.SIGNAL('clicked()'), self.ClrSendButtonProcess)
         self.clrcntbutton.connect(self.clrcntbutton, QtCore.SIGNAL('clicked()'), self.ClrCntButtonProcess )
-        self.recstr = str#串口接收字符串
+        self.cmd1sned_Button.connect(self.cmd1sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd1SendButtonProcess)
+        self.cmd2sned_Button.connect(self.cmd2sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd2SendButtonProcess)
+        self.cmd3sned_Button.connect(self.cmd3sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd3SendButtonProcess)
+        self.cmd4sned_Button.connect(self.cmd4sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd4SendButtonProcess)
+        self.cmd5sned_Button.connect(self.cmd5sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd5SendButtonProcess)
 
+
+        self.recstr = str#串口接收字符串
         self.recdatacnt = 0#数据接收计数
         self.senddatacnt = 0#数据发送是计数
 
@@ -103,6 +109,11 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
 
     def ClrSendButtonProcess(self):
         self.mainsend_Edit.clear()
+        self.cmd1_Edit.clear()
+        self.cmd2_Edit.clear()
+        self.cmd3_Edit.clear()
+        self.cmd4_Edit.clear()
+        self.cmd5_Edit.clear()
 
     def ClrCntButtonProcess(self):
         self.senddatacnt = 0
@@ -122,23 +133,73 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         if self.distext.currentIndex() == 0:
             self.dishex.appendPlainText(self.HexShow(self.recstr))#把数据按十六进制显示
         elif self.distext.currentIndex() == 1:
-            self.distring.appendPlainText(self.recstr.decode("utf-8"))#数据按字符格式显示
+            self.distring.moveCursor(QtGui.QTextCursor.End)
+            self.distring.insertPlainText(self.recstr.decode("utf-8"))
+           # self.distring.appendPlainText(self.recstr.decode("utf-8"))#数据按字符格式显示
         else:
             pass
+
+
+    def SerialSend(self,sdata):
+        try:
+            self.senddatacnt += self._serial.write(sdata)
+        except:
+             QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
+
+        self.sendnum_lineEdit.setText(str(self.senddatacnt))
 
 
     def MainSendButtonProcess(self):
         if self.portstatus_flag == True:
             if self.char_radioButton.isChecked():
-                self.senddatacnt += self._serial.write(self.mainsend_Edit.toPlainText().encode())
+                self.SerialSend(self.mainsend_Edit.toPlainText().encode())
             else:
                 sendstr = self.mainsend_Edit.toPlainText()
                 try:
-                    self.senddatacnt += self._serial.write( bytearray.fromhex( sendstr.replace('0x','')))
+                    self.SerialSend(bytearray.fromhex( sendstr.replace('0x','')))
                 except:
-                     QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
+                    QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
 
-            self.sendnum_lineEdit.setText(str(self.senddatacnt))
+
+    def Cmd1SendButtonProcess(self):
+        if self.portstatus_flag == True:
+            sendstr = self.cmd1_Edit.text()
+            try:
+                self.SerialSend(bytearray.fromhex( sendstr.replace('0x','')))
+            except:
+                QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
+
+    def Cmd2SendButtonProcess(self):
+        if self.portstatus_flag == True:
+            sendstr = self.cmd2_Edit.text()
+            try:
+                self.SerialSend(bytearray.fromhex( sendstr.replace('0x','')))
+            except:
+                QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
+
+    def Cmd3SendButtonProcess(self):
+        if self.portstatus_flag == True:
+            sendstr = self.cmd3_Edit.text()
+            try:
+                self.SerialSend(bytearray.fromhex( sendstr.replace('0x','')))
+            except:
+                QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
+
+    def Cmd4SendButtonProcess(self):
+        if self.portstatus_flag == True:
+            sendstr = self.cmd4_Edit.text()
+            try:
+                self.SerialSend(bytearray.fromhex( sendstr.replace('0x','')))
+            except:
+                QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
+
+    def Cmd5SendButtonProcess(self):
+        if self.portstatus_flag == True:
+            sendstr = self.cmd5_Edit.text()
+            try:
+                self.SerialSend(bytearray.fromhex( sendstr.replace('0x','')))
+            except:
+                QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
 ###############################################
 #数据接收线程
     def SciReadData(self):#deal sci data
