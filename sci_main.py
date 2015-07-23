@@ -31,7 +31,9 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.portstatus_flag = False
         self._serial = serial.Serial()#init serial class
         self.sciopenButton.connect(self.sciopenButton, QtCore.SIGNAL('clicked()'), self.SciOpenButton_Click)#connect button click func
+        self.clrcontentbutton.connect(self.clrcontentbutton, QtCore.SIGNAL('clicked()'), self.ClrButtonProcess)
         self.test = 0
+        self.recstr = str
 
         self.scirec_signal = SciSignalClass()#添加一个串口数据接收成功信号
         self.scirec_signal.SciReceive.connect(self.SciWinReFresh)#产生信号连接槽
@@ -85,19 +87,51 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             self.portcomtext.setEnabled(True)
             self.portstatus_flag = False
 
+
+    def ClrButtonProcess(self):
+        if self.distext.currentIndex() == 0:
+            self.dishex.clear()
+        elif self.distext.currentIndex() == 1:
+            self.distring.clear()
+        else:
+            self.disprotocol.clear()
+
+
+    def HexShow(self,strargv):#转换陈十六进制格式显示
+        restr = ''
+        slen = len(strargv)
+        for i in range(slen):
+            restr += hex(strargv[i])+' '
+        return restr
+
     @QtCore.pyqtSlot()#串口数据刷新槽
     def SciWinReFresh(self):
-        self.dishex.appendPlainText('test')
+        if self.distext.currentIndex() == 0:
+            self.dishex.appendPlainText(self.HexShow(self.recstr))#把数据按十六进制显示
+        elif self.distext.currentIndex() == 1:
+            self.distring.appendPlainText(self.recstr.decode("utf-8"))#数据按字符格式显示
+        else:
+            pass
 
 ###############################################
 #数据接收线程
     def SciReadData(self):#deal sci data
         while True:
             if self.portstatus_flag == True:
-                self.scirec_signal.SciReceive.emit()#发送接收数据的信号
-                time.sleep(0.02)
+                try:
+                    bytesToRead = self._serial.inWaiting()
+                except:
+                    self.sciopenButton.setChecked(False)#出现异常，则关闭串口
+                    self.SciOpenButton_Click()
+                    bytesToRead = 0
+
+                if bytesToRead > 0:
+                    self.recstr = self._serial.read(bytesToRead)#读取苏三说
+                    self.scirec_signal.SciReceive.emit()#发送接收数据的信号
+
+                time.sleep(0.02)#20ms处理一次数据
             else:
-                time.sleep(1)
+                time.sleep(1)#位打开则没1s出来判断一次
 
 
 

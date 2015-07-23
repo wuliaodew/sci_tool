@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sci_tool.ui'
 #
-# Created: Thu Jul 23 09:49:19 2015
+# Created: Thu Jul 23 11:21:49 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -153,6 +153,20 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addWidget(self.disprotocol)
         self.distext.addTab(self.Protocoltab, _fromUtf8(""))
         self.verticalLayout_3.addWidget(self.distext)
+        self.horizontalLayout_16 = QtGui.QHBoxLayout()
+        self.horizontalLayout_16.setObjectName(_fromUtf8("horizontalLayout_16"))
+        self.clrcontentbutton = QtGui.QPushButton(self.scitooltab)
+        self.clrcontentbutton.setObjectName(_fromUtf8("clrcontentbutton"))
+        self.horizontalLayout_16.addWidget(self.clrcontentbutton)
+        self.savecontentbutton = QtGui.QPushButton(self.scitooltab)
+        self.savecontentbutton.setObjectName(_fromUtf8("savecontentbutton"))
+        self.horizontalLayout_16.addWidget(self.savecontentbutton)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_16)
+        self.line_6 = QtGui.QFrame(self.scitooltab)
+        self.line_6.setFrameShape(QtGui.QFrame.HLine)
+        self.line_6.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_6.setObjectName(_fromUtf8("line_6"))
+        self.verticalLayout_3.addWidget(self.line_6)
         self.verticalLayout_2.addLayout(self.verticalLayout_3)
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setSpacing(3)
@@ -624,6 +638,8 @@ class Ui_MainWindow(object):
         self.framend_edit.setInputMask(_translate("MainWindow", "HH; ", None))
         self.framend_edit.setText(_translate("MainWindow", "FF", None))
         self.distext.setTabText(self.distext.indexOf(self.Protocoltab), _translate("MainWindow", "Protocol", None))
+        self.clrcontentbutton.setText(_translate("MainWindow", "清除内容", None))
+        self.savecontentbutton.setText(_translate("MainWindow", "另存为", None))
         self.portlabel.setText(_translate("MainWindow", "端口号：", None))
         self.lineEdit.setText(_translate("MainWindow", "Com Port", None))
         self.portcomtext.setInputMask(_translate("MainWindow", "99; ", None))
