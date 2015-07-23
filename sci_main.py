@@ -28,14 +28,17 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.__index = 0
         self.setupUi(MainWindow)#display sci tool menu
 
-        self.portstatus_flag = False
+        self.portstatus_flag = False#端口使能标志
         self._serial = serial.Serial()#init serial class
         self.sciopenButton.connect(self.sciopenButton, QtCore.SIGNAL('clicked()'), self.SciOpenButton_Click)#connect button click func
         self.clrcontentbutton.connect(self.clrcontentbutton, QtCore.SIGNAL('clicked()'), self.ClrButtonProcess)
         self.mainsend_Button.connect(self.mainsend_Button, QtCore.SIGNAL('clicked()'), self.MainSendButtonProcess)
-        self.sendclr_Button.connect(self.sendclr_Button,  QtCore.SIGNAL('clicked()'), self.ClrSendButtonProcess)
-        self.test = 0
-        self.recstr = str
+        self.sendclr_Button.connect(self.sendclr_Button, QtCore.SIGNAL('clicked()'), self.ClrSendButtonProcess)
+        self.clrcntbutton.connect(self.clrcntbutton, QtCore.SIGNAL('clicked()'), self.ClrCntButtonProcess )
+        self.recstr = str#串口接收字符串
+
+        self.recdatacnt = 0#数据接收计数
+        self.senddatacnt = 0#数据发送是计数
 
         self.scirec_signal = SciSignalClass()#添加一个串口数据接收成功信号
         self.scirec_signal.SciReceive.connect(self.SciWinReFresh)#产生信号连接槽
@@ -101,6 +104,11 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
     def ClrSendButtonProcess(self):
         self.mainsend_Edit.clear()
 
+    def ClrCntButtonProcess(self):
+        self.senddatacnt = 0
+        self.recdatacnt = 0
+        self.sendnum_lineEdit.setText(str(self.senddatacnt))
+        self.recnumlineEdit.setText(str(self.recdatacnt))
 
     def HexShow(self,strargv):#转换陈十六进制格式显示
         restr = ''
@@ -122,13 +130,15 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
     def MainSendButtonProcess(self):
         if self.portstatus_flag == True:
             if self.char_radioButton.isChecked():
-                self._serial.write(self.mainsend_Edit.toPlainText().encode())
+                self.senddatacnt += self._serial.write(self.mainsend_Edit.toPlainText().encode())
             else:
                 sendstr = self.mainsend_Edit.toPlainText()
                 try:
-                    self._serial.write( bytearray.fromhex( sendstr.replace('0x','')))
+                    self.senddatacnt += self._serial.write( bytearray.fromhex( sendstr.replace('0x','')))
                 except:
                      QtGui.QMessageBox.warning(None, 'Error',"数据格式错误", QtGui.QMessageBox.Ok)
+
+            self.sendnum_lineEdit.setText(str(self.senddatacnt))
 ###############################################
 #数据接收线程
     def SciReadData(self):#deal sci data
@@ -143,6 +153,8 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
 
                 if bytesToRead > 0:
                     self.recstr = self._serial.read(bytesToRead)#读取苏三说
+                    self.recdatacnt += bytesToRead
+                    self.recnumlineEdit.setText(str(self.recdatacnt))
                     self.scirec_signal.SciReceive.emit()#发送接收数据的信号
 
                 time.sleep(0.02)#20ms处理一次数据

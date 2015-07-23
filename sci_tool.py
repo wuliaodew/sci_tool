@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sci_tool.ui'
 #
-# Created: Thu Jul 23 13:29:09 2015
+# Created: Thu Jul 23 15:47:43 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -619,6 +619,36 @@ class Ui_MainWindow(object):
         self.horizontalLayout_10.addWidget(self.textBrowser)
         self.maintabwidget.addTab(self.about_tab, _fromUtf8(""))
         self.verticalLayout_4.addWidget(self.maintabwidget)
+        self.horizontalLayout_17 = QtGui.QHBoxLayout()
+        self.horizontalLayout_17.setObjectName(_fromUtf8("horizontalLayout_17"))
+        self.label_11 = QtGui.QLabel(self.centralwidget)
+        self.label_11.setMaximumSize(QtCore.QSize(60, 16777215))
+        self.label_11.setObjectName(_fromUtf8("label_11"))
+        self.horizontalLayout_17.addWidget(self.label_11)
+        self.recnumlineEdit = QtGui.QLineEdit(self.centralwidget)
+        self.recnumlineEdit.setMaximumSize(QtCore.QSize(60, 16777215))
+        self.recnumlineEdit.setReadOnly(True)
+        self.recnumlineEdit.setObjectName(_fromUtf8("recnumlineEdit"))
+        self.horizontalLayout_17.addWidget(self.recnumlineEdit)
+        self.label_9 = QtGui.QLabel(self.centralwidget)
+        self.label_9.setMaximumSize(QtCore.QSize(60, 16777215))
+        self.label_9.setObjectName(_fromUtf8("label_9"))
+        self.horizontalLayout_17.addWidget(self.label_9)
+        self.sendnum_lineEdit = QtGui.QLineEdit(self.centralwidget)
+        self.sendnum_lineEdit.setMaximumSize(QtCore.QSize(60, 16777215))
+        self.sendnum_lineEdit.setReadOnly(True)
+        self.sendnum_lineEdit.setObjectName(_fromUtf8("sendnum_lineEdit"))
+        self.horizontalLayout_17.addWidget(self.sendnum_lineEdit)
+        self.clrcntbutton = QtGui.QPushButton(self.centralwidget)
+        self.clrcntbutton.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.clrcntbutton.setObjectName(_fromUtf8("clrcntbutton"))
+        self.horizontalLayout_17.addWidget(self.clrcntbutton)
+        spacerItem6 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_17.addItem(spacerItem6)
+        self.horizontalLayout_17.setStretch(2, 1)
+        self.horizontalLayout_17.setStretch(3, 1)
+        self.horizontalLayout_17.setStretch(4, 2)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_17)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -713,4 +743,9 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p align=\"right\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.maintabwidget.setTabText(self.maintabwidget.indexOf(self.about_tab), _translate("MainWindow", "About", None))
+        self.label_11.setText(_translate("MainWindow", "接收数据：", None))
+        self.recnumlineEdit.setText(_translate("MainWindow", "0", None))
+        self.label_9.setText(_translate("MainWindow", "发送数据：", None))
+        self.sendnum_lineEdit.setText(_translate("MainWindow", "0", None))
+        self.clrcntbutton.setText(_translate("MainWindow", "清计数", None))
 
