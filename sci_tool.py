@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sci_tool.ui'
 #
-# Created: Fri Jul 24 00:30:02 2015
+# Created: Fri Jul 24 10:22:49 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -688,10 +688,24 @@ class Ui_MainWindow(object):
         self.verticalLayout_12.addWidget(self.line_7)
         self.horizontalLayout_19 = QtGui.QHBoxLayout()
         self.horizontalLayout_19.setObjectName(_fromUtf8("horizontalLayout_19"))
+        self.radioButton = QtGui.QRadioButton(self.debugdatatab)
+        self.radioButton.setObjectName(_fromUtf8("radioButton"))
+        self.horizontalLayout_19.addWidget(self.radioButton)
+        self.radioButton_2 = QtGui.QRadioButton(self.debugdatatab)
+        self.radioButton_2.setObjectName(_fromUtf8("radioButton_2"))
+        self.horizontalLayout_19.addWidget(self.radioButton_2)
+        self.radioButton_3 = QtGui.QRadioButton(self.debugdatatab)
+        self.radioButton_3.setObjectName(_fromUtf8("radioButton_3"))
+        self.horizontalLayout_19.addWidget(self.radioButton_3)
+        self.radioButton_4 = QtGui.QRadioButton(self.debugdatatab)
+        self.radioButton_4.setObjectName(_fromUtf8("radioButton_4"))
+        self.horizontalLayout_19.addWidget(self.radioButton_4)
         self.verticalLayout_12.addLayout(self.horizontalLayout_19)
-        self.verticalLayout_12.setStretch(0, 1)
-        self.verticalLayout_12.setStretch(1, 1)
-        self.verticalLayout_12.setStretch(2, 1)
+        self.debug_matplot_layout = QtGui.QHBoxLayout()
+        self.debug_matplot_layout.setObjectName(_fromUtf8("debug_matplot_layout"))
+        self.verticalLayout_12.addLayout(self.debug_matplot_layout)
+        self.verticalLayout_12.setStretch(0, 3)
+        self.verticalLayout_12.setStretch(3, 4)
         self.debugtab.addTab(self.debugdatatab, _fromUtf8(""))
         self.matplottab = QtGui.QWidget()
         self.matplottab.setObjectName(_fromUtf8("matplottab"))
@@ -860,6 +874,10 @@ class Ui_MainWindow(object):
         self.label_14.setText(_translate("MainWindow", "< X3 <", None))
         self.lineEdit_7.setInputMask(_translate("MainWindow", "9999; ", None))
         self.lineEdit_7.setText(_translate("MainWindow", "70", None))
+        self.radioButton.setText(_translate("MainWindow", "Hex 图形显示", None))
+        self.radioButton_2.setText(_translate("MainWindow", "X1图形显示", None))
+        self.radioButton_3.setText(_translate("MainWindow", "X2图形显示", None))
+        self.radioButton_4.setText(_translate("MainWindow", "X3图形显示", None))
         self.debugtab.setTabText(self.debugtab.indexOf(self.debugdatatab), _translate("MainWindow", "DebugData", None))
         self.debugtab.setTabText(self.debugtab.indexOf(self.matplottab), _translate("MainWindow", "Dataplot", None))
         self.debugtab.setTabText(self.debugtab.indexOf(self.Instaspintab), _translate("MainWindow", "Instaspin ", None))

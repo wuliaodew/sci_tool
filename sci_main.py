@@ -19,6 +19,25 @@ SERIAL_STOPBIT_ARRAY = (serial.STOPBITS_ONE, serial.STOPBITS_ONE_POINT_FIVE, ser
 SERIAL_CHECKBIT_ARRAY = (serial.PARITY_NONE, serial.PARITY_EVEN, serial.PARITY_ODD , serial.PARITY_MARK, serial.PARITY_SPACE)
 
 
+class MplCanvas(FigureCanvas):
+    def __init__(self):
+        self.fig = Figure()
+        self.ax = self.fig.add_subplot(111)
+        self.fig.subplots_adjust(left=0.06, right=0.99, top=0.9, bottom=0.1)
+        FigureCanvas.__init__(self, self.fig)
+        FigureCanvas.setSizePolicy(self, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.line1, = self.ax.plot([],[],color = 'blue')
+        self.plotdatabuf =[]
+        self.ax.grid()
+        self.ax.hold(False)
+
+    def matplot_updatabuf(self, newdata):
+        if len(self.plotdatabuf) > 500:
+            del self.plotdatabuf[0]
+
+        self.plotdatabuf.append(newdata)
+
 class SciSignalClass( QtCore.QObject):
     SciReceive =  QtCore.pyqtSignal()
 
@@ -42,6 +61,9 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.cmd5sned_Button.connect(self.cmd5sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd5SendButtonProcess)
         self.savecontentbutton.connect(self.savecontentbutton, QtCore.SIGNAL('clicked()'), self.SaveRecButtonProcess)
 
+
+        self.matplot = MplCanvas()
+        self.debug_matplot_layout.addWidget(self.matplot)
 
         self.recstr = str#串口接收字符串
         self.recdatacnt = 0#数据接收计数

@@ -1264,7 +1264,7 @@
            <attribute name="title">
             <string>DebugData</string>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_12" stretch="1,1,1">
+           <layout class="QVBoxLayout" name="verticalLayout_12" stretch="3,0,0,4">
             <property name="spacing">
              <number>1</number>
             </property>
@@ -1481,7 +1481,39 @@
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_19"/>
+             <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <item>
+               <widget class="QRadioButton" name="hexselec_radio">
+                <property name="text">
+                 <string>Hex 图形显示</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="x1selec_radio">
+                <property name="text">
+                 <string>X1图形显示</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="x2selec_radio">
+                <property name="text">
+                 <string>X2图形显示</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="x3selec_radio">
+                <property name="text">
+                 <string>X3图形显示</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="debug_matplot_layout"/>
             </item>
            </layout>
           </widget>
