@@ -230,14 +230,21 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             self.dishex.appendPlainText(self.HexShow(self.recstr))#把数据按十六进制显示
             if self.hexselec_radio.isChecked() == True:
                 self.HexMatplotDisplay(self.recstr)
+
+            if self.dishex.toPlainText().__len__() > 100000:
+                self.dishex.clear()
         elif self.distext.currentIndex() == 1:
-            self.distring.moveCursor(QtGui.QTextCursor.End)
-            try:
-                self.distring.insertPlainText(self.recstr.decode("utf-8"))
-                if self.x1_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True:
-                    self.DebugDataSelecDeal(self.recstr.decode("utf-8"))
-            except:
-                pass
+           # self.distring.moveCursor(QtGui.QTextCursor.End)
+         #   try:
+           # self.distring.insertPlainText(self.recstr.decode("utf-8"))
+            self.distring.appendPlainText(self.recstr.decode("utf-8"))
+            if self.x1_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True:
+                self.DebugDataSelecDeal(self.recstr.decode("utf-8"))
+
+            if self.distring.toPlainText().__len__() > 20000:
+                self.distring.clear()
+          #  except:
+         #       pass
            # self.distring.appendPlainText(self.recstr.decode("utf-8"))#数据按字符格式显示
         else:
             pass
@@ -331,7 +338,11 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
 
                 if self.x1selec_radio.isChecked() == True:
                     self.matplot.matplot_updatabuf(readdigital)
-              #      self.Multiplot_Refresh()
+                    self.Multiplot_Refresh()
+
+                if self.x1_plainTextEdit.toPlainText().__len__() > 10000:
+                    self.x1_plainTextEdit.clear()
+
 
             if self.x2_checkBox.isChecked() == True:
                 if readdigital >= self.x2_low and readdigital < self.x2_high:
@@ -341,6 +352,9 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                     self.matplot.matplot_updatabuf(readdigital)
                     self.Multiplot_Refresh()
 
+                if self.x2_plainTextEdit.toPlainText().__len__() > 10000:
+                    self.x2_plainTextEdit.clear()
+
             if self.x3_checkBox.isChecked() == True:
                 if readdigital >= self.x3_low and readdigital < self.x3_high:
                     self.x3_plainTextEdit.appendPlainText(str(round(readdigital, 7)))
@@ -348,6 +362,9 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                 if self.x3selec_radio.isChecked() == True:
                     self.matplot.matplot_updatabuf(readdigital)
                     self.Multiplot_Refresh()
+
+                if self.x3_plainTextEdit.toPlainText().__len__() > 10000:
+                    self.x3_plainTextEdit.clear()
 
     def X1ClrButtonProcess(self):
         self.x1_plainTextEdit.clear()
