@@ -60,8 +60,14 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.cmd4sned_Button.connect(self.cmd4sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd4SendButtonProcess)
         self.cmd5sned_Button.connect(self.cmd5sned_Button, QtCore.SIGNAL('clicked()'), self.Cmd5SendButtonProcess)
         self.savecontentbutton.connect(self.savecontentbutton, QtCore.SIGNAL('clicked()'), self.SaveRecButtonProcess)
+        self.x1save_button.connect(self.x1save_button, QtCore.SIGNAL('clicked()'), self.X1SaveButtonProcess)
+        self.x1clr_button.connect(self.x1clr_button,  QtCore.SIGNAL('clicked()'), self.X1ClrButtonProcess)
+        self.x2save_button.connect(self.x2save_button, QtCore.SIGNAL('clicked()'), self.X2SaveButtonProcess)
+        self.x2clr_button.connect(self.x2clr_button,  QtCore.SIGNAL('clicked()'), self.X2ClrButtonProcess)
+        self.x3save_button.connect(self.x3save_button, QtCore.SIGNAL('clicked()'), self.X3SaveButtonProcess)
+        self.x3clr_button.connect(self.x3clr_button,  QtCore.SIGNAL('clicked()'), self.X3ClrButtonProcess)
 
-
+        #用来实现波形的显示，画图
         self.matplot = MplCanvas()
         self.debug_matplot_layout.addWidget(self.matplot)
 
@@ -109,6 +115,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                 self.stopbitcombo.setEnabled(False)
                 self.portcomtext.setEnabled(False)
                 self.portstatus_flag = True
+                self.SciOpenDebugDataMenuDeal()
             else:
                 self.sciopenButton.setChecked(False)
          else:
@@ -120,9 +127,75 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             self.checkbitcombo.setEnabled(True)
             self.portcomtext.setEnabled(True)
             self.portstatus_flag = False
+            self.SciCloseDebugDataMenuDeal()
 
 
-    def ClrButtonProcess(self):
+    def SciOpenDebugDataMenuDeal(self):
+        if self.x1_checkBox.isChecked() == True:
+            try:
+                self.x1_low = float(self.x1_low_line.text())
+                self.x1_high = float(self.x1_high_line.text())
+                if self.x1_low > self.x1_high:
+                     QtGui.QMessageBox.warning(None, '错误',"X1填写数据出错", QtGui.QMessageBox.Ok)
+                     self.x1_checkBox.setChecked(False)
+            except :
+                 QtGui.QMessageBox.warning(None, '错误',"X1填写数据出错", QtGui.QMessageBox.Ok)
+                 self.x1_checkBox.setChecked(False)
+
+        if self.x2_checkBox.isChecked() == True:
+            try:
+                self.x2_low = float(self.x2_low_line.text())
+                self.x2_high = float(self.x2_high_line.text())
+                if self.x2_low > self.x2_high:
+                     QtGui.QMessageBox.warning(None, '错误',"X2填写数据出错", QtGui.QMessageBox.Ok)
+                     self.x2_checkBox.setChecked(False)
+            except :
+                 QtGui.QMessageBox.warning(None, '错误',"X2填写数据出错", QtGui.QMessageBox.Ok)
+                 self.x2_checkBox.setChecked(False)
+
+        if self.x3_checkBox.isChecked() == True:
+            try:
+                self.x3_low = float(self.x3_low_line.text())
+                self.x3_high = float(self.x3_high_line.text())
+                if self.x3_low > self.x3_high:
+                     QtGui.QMessageBox.warning(None, '错误',"X3填写数据出错", QtGui.QMessageBox.Ok)
+                     self.x3_checkBox.setChecked(False)
+            except :
+                 QtGui.QMessageBox.warning(None, '错误',"X3填写数据出错", QtGui.QMessageBox.Ok)
+                 self.x3_checkBox.setChecked(False)
+
+        self.x1_checkBox.setEnabled(False)
+        self.x1_low_line.setEnabled(False)
+        self.x1_high_line.setEnabled(False)
+        self.x2_checkBox.setEnabled(False)
+        self.x2_low_line.setEnabled(False)
+        self.x2_high_line.setEnabled(False)
+        self.x3_checkBox.setEnabled(False)
+        self.x3_low_line.setEnabled(False)
+        self.x3_high_line.setEnabled(False)
+        self.hexselec_radio.setEnabled(False)
+        self.x1selec_radio.setEnabled(False)
+        self.x2selec_radio.setEnabled(False)
+        self.x3selec_radio.setEnabled(False)
+
+    def SciCloseDebugDataMenuDeal(self):
+        self.x1_checkBox.setEnabled(True)
+        self.x1_low_line.setEnabled(True)
+        self.x1_high_line.setEnabled(True)
+        self.x2_checkBox.setEnabled(True)
+        self.x2_low_line.setEnabled(True)
+        self.x2_high_line.setEnabled(True)
+        self.x3_checkBox.setEnabled(True)
+        self.x3_low_line.setEnabled(True)
+        self.x3_high_line.setEnabled(True)
+        self.hexselec_radio.setEnabled(True)
+        self.x1selec_radio.setEnabled(True)
+        self.x2selec_radio.setEnabled(True)
+        self.x3selec_radio.setEnabled(True)
+
+
+
+    def ClrButtonProcess(self):#接收窗口清楚数据
         if self.distext.currentIndex() == 0:
             self.dishex.clear()
         elif self.distext.currentIndex() == 1:
@@ -130,7 +203,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         else:
             self.disprotocol.clear()
 
-    def ClrSendButtonProcess(self):
+    def ClrSendButtonProcess(self):#清除发送窗口数据
         self.mainsend_Edit.clear()
         self.cmd1_Edit.clear()
         self.cmd2_Edit.clear()
@@ -138,7 +211,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.cmd4_Edit.clear()
         self.cmd5_Edit.clear()
 
-    def ClrCntButtonProcess(self):
+    def ClrCntButtonProcess(self):#清计算窗口
         self.senddatacnt = 0
         self.recdatacnt = 0
         self.sendnum_lineEdit.setText(str(self.senddatacnt))
@@ -155,9 +228,16 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
     def SciWinReFresh(self):
         if self.distext.currentIndex() == 0:
             self.dishex.appendPlainText(self.HexShow(self.recstr))#把数据按十六进制显示
+            if self.hexselec_radio.isChecked() == True:
+                self.HexMatplotDisplay(self.recstr)
         elif self.distext.currentIndex() == 1:
             self.distring.moveCursor(QtGui.QTextCursor.End)
-            self.distring.insertPlainText(self.recstr.decode("utf-8"))
+            try:
+                self.distring.insertPlainText(self.recstr.decode("utf-8"))
+                if self.x1_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True:
+                    self.DebugDataSelecDeal(self.recstr.decode("utf-8"))
+            except:
+                pass
            # self.distring.appendPlainText(self.recstr.decode("utf-8"))#数据按字符格式显示
         else:
             pass
@@ -236,8 +316,80 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
 
         fname.close()
 
-###############################################
-#数据接收线程
+
+    def DebugDataSelecDeal(self, p_str):
+        rec_array = re.split('\n|,| |\r',p_str)
+        for num in rec_array:
+            try:
+                readdigital = float(num)
+            except:
+                continue
+
+            if self.x1_checkBox.isChecked() == True:
+                if readdigital >= self.x1_low and readdigital < self.x1_high:
+                    self.x1_plainTextEdit.appendPlainText(str(round(readdigital, 7)))
+
+                if self.x1selec_radio.isChecked() == True:
+                    self.matplot.matplot_updatabuf(readdigital)
+              #      self.Multiplot_Refresh()
+
+            if self.x2_checkBox.isChecked() == True:
+                if readdigital >= self.x2_low and readdigital < self.x2_high:
+                    self.x2_plainTextEdit.appendPlainText(str(round(readdigital, 7)))
+
+                if self.x2selec_radio.isChecked() == True:
+                    self.matplot.matplot_updatabuf(readdigital)
+                    self.Multiplot_Refresh()
+
+            if self.x3_checkBox.isChecked() == True:
+                if readdigital >= self.x3_low and readdigital < self.x3_high:
+                    self.x3_plainTextEdit.appendPlainText(str(round(readdigital, 7)))
+
+                if self.x3selec_radio.isChecked() == True:
+                    self.matplot.matplot_updatabuf(readdigital)
+                    self.Multiplot_Refresh()
+
+    def X1ClrButtonProcess(self):
+        self.x1_plainTextEdit.clear()
+
+    def X1SaveButtonProcess(self):
+        filename = QtGui.QFileDialog.getSaveFileName(self.x1save_button, 'Save File', '.',"Text file(*.txt);;All file(*.*)")
+        fname = open(filename, 'w')
+        fname.write(self.x1_plainTextEdit.toPlainText())
+        fname.close()
+
+    def X2ClrButtonProcess(self):
+        self.x2_plainTextEdit.clear()
+
+    def X2SaveButtonProcess(self):
+        filename = QtGui.QFileDialog.getSaveFileName(self.x2save_button, 'Save File', '.',"Text file(*.txt);;All file(*.*)")
+        fname = open(filename, 'w')
+        fname.write(self.x2_plainTextEdit.toPlainText())
+        fname.close()
+
+    def X3ClrButtonProcess(self):
+        self.x3_plainTextEdit.clear()
+
+    def X3SaveButtonProcess(self):
+        filename = QtGui.QFileDialog.getSaveFileName(self.x3save_button, 'Save File', '.',"Text file(*.txt);;All file(*.*)")
+        fname = open(filename, 'w')
+        fname.write(self.x3_plainTextEdit.toPlainText())
+        fname.close()
+
+    def HexMatplotDisplay(self,p_str):
+        for num in p_str:
+            self.matplot.matplot_updatabuf(num)
+        self.Multiplot_Refresh()
+
+    def Multiplot_Refresh(self):
+        self.matplot.line1.set_xdata(range(len(self.matplot.plotdatabuf)))
+        self.matplot.line1.set_ydata(self.matplot.plotdatabuf)
+
+        self.matplot.ax.relim()
+        self.matplot.ax.autoscale_view()
+        self.matplot.draw()
+    ###############################################
+    #数据接收线程
     def SciReadData(self):#deal sci data
         while True:
             if self.portstatus_flag == True:
@@ -249,12 +401,12 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                     bytesToRead = 0
 
                 if bytesToRead > 0:
-                    self.recstr = self._serial.read(bytesToRead)#读取苏三说
+                    self.recstr = self._serial.read(bytesToRead)#读取串口数据
                     self.recdatacnt += bytesToRead
                     self.recnumlineEdit.setText(str(self.recdatacnt))
                     self.scirec_signal.SciReceive.emit()#发送接收数据的信号
 
-                time.sleep(0.02)#20ms处理一次数据
+                time.sleep(0.05)#50ms处理一次数据
             else:
                 time.sleep(1)#位打开则没1s出来判断一次
 
