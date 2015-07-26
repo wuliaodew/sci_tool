@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sci_tool.ui'
 #
-# Created: Sun Jul 26 16:33:51 2015
+# Created: Sun Jul 26 23:04:21 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,6 +33,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMinimumSize(QtCore.QSize(800, 500))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("instaspin.bmp")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -105,6 +108,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addWidget(self.distring)
         self.distext.addTab(self.disstringtext, _fromUtf8(""))
         self.Protocoltab = QtGui.QWidget()
+        self.Protocoltab.setEnabled(False)
         self.Protocoltab.setObjectName(_fromUtf8("Protocoltab"))
         self.verticalLayout_5 = QtGui.QVBoxLayout(self.Protocoltab)
         self.verticalLayout_5.setSpacing(1)
@@ -777,6 +781,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_12.setStretch(3, 4)
         self.debugtab.addTab(self.debugdatatab, _fromUtf8(""))
         self.matplottab = QtGui.QWidget()
+        self.matplottab.setEnabled(False)
         self.matplottab.setObjectName(_fromUtf8("matplottab"))
         self.verticalLayout_6 = QtGui.QVBoxLayout(self.matplottab)
         self.verticalLayout_6.setSpacing(1)
@@ -796,7 +801,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addLayout(self.Dataplot3)
         self.debugtab.addTab(self.matplottab, _fromUtf8(""))
         self.Instaspintab = QtGui.QWidget()
-        self.Instaspintab.setEnabled(True)
+        self.Instaspintab.setEnabled(False)
         self.Instaspintab.setObjectName(_fromUtf8("Instaspintab"))
         self.debugtab.addTab(self.Instaspintab, _fromUtf8(""))
         self.horizontalLayout.addWidget(self.debugtab)
@@ -850,7 +855,7 @@ class Ui_MainWindow(object):
         self.maintabwidget.setCurrentIndex(0)
         self.distext.setCurrentIndex(0)
         self.baudratecombo.setCurrentIndex(16)
-        self.debugtab.setCurrentIndex(1)
+        self.debugtab.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -957,9 +962,13 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600;\">电机串口调试工具</span></p>\n"
-"<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Instaspin Foc</span>交流群:<span style=\" text-decoration: underline;\">335663930</span><span style=\" font-weight:600;\"> Author</span>@<span style=\" text-decoration: underline;\">nixianmin</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; font-weight:600;\">串口调试工具</span></p>\n"
+"<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600;\">TI Instaspin Foc</span><span style=\" font-size:10pt;\">交流群:</span><span style=\" font-size:10pt; text-decoration: underline;\">335663930</span><span style=\" font-size:10pt; font-weight:600;\"> Author</span><span style=\" font-size:10pt;\">@</span><span style=\" font-size:10pt; text-decoration: underline;\">nixianmin</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">   <span style=\" font-size:12pt;\"> 最近在找一个能够利用串口来实现数据绘图的工具，用来做电机控制的调试，找了不少工具后发现没一个让我满意的，最后只能自己花点时间去写一个，花了不少时间，终于做了个差不多能用的</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">    这个工具除了实现简单的数据收发功能外，还能在DebugData界面将数据按照大小来区分出来，并且能够选择是否按照图形显示出来，对于用TI 的IQmath库的朋友，能够很容易利用库函数获得需要发送的数据格式。</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">    另外我还做了一个功能就是能够实现单字节的数据图形显示，就是说利用一个字节即0~255，来代表一个数据的范围，快速刷新，能够达到1K以上的刷新速度。</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p>\n"
+"<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">问题反馈：nixianmin@gmail.com</span></p>\n"
 "<p align=\"right\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.maintabwidget.setTabText(self.maintabwidget.indexOf(self.about_tab), _translate("MainWindow", "About", None))
         self.label_11.setText(_translate("MainWindow", "接收数据：", None))

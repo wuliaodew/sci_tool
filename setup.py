@@ -1,9 +1,12 @@
 from distutils.core import setup
 import py2exe
+import sys
 
 
 # We need to import the glob module to search for all files.
 import glob
+
+sys.argv.append('py2exe')
 
 # We need to exclude matplotlib backends not being used by this executable.  You may find
 # that you need different excludes to create a working executable with your chosen backend.
@@ -16,7 +19,8 @@ opts = {
                 'excludes': ['_gtkagg', '_tkagg', '_agg2', '_cairo', '_cocoaagg',
                              '_fltkagg', '_gtk', '_gtkcairo', ],
                 'dll_excludes': ['libgdk-win32-2.0-0.dll',
-                                 'libgobject-2.0-0.dll']
+                                 'libgobject-2.0-0.dll'],
+                "compressed":1
               }
        }
 
@@ -31,4 +35,8 @@ data_files = [(r'mpl-data', glob.glob(r'C:\Python26\Lib\site-packages\matplotlib
                   (r'mpl-data\fonts',glob.glob(r'C:\Python34\Lib\site-packages\matplotlib\mpl-data\fonts\*.*'))]
 
 # for console program use 'console = [{"script" : "scriptname.py"}]
-setup(windows=[{"script" : "scom_main.py"}], options=opts,   data_files=data_files)
+setup(name = 'MotorDebugTool',
+      version='1.0',
+      windows=[{"script" : "sci_main.py"}],
+      options=opts,
+      data_files=data_files)

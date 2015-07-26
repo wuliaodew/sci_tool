@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__author__ = 'wuliaodew'
+__author__ = 'nixianmin'
 __name__ = '__main__'
 
 from PyQt4 import QtCore, QtGui
