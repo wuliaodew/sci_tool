@@ -34,10 +34,14 @@ class MplCanvas(FigureCanvas):
         self.ax.hold(False)
 
     def matplot_updatabuf(self, newdata):
-        if len(self.plotdatabuf) > self.databuflimit:
+        if len(self.plotdatabuf) >= self.databuflimit:
             del self.plotdatabuf[0]
-
-        self.plotdatabuf.append(newdata)
+            try:
+                self.plotdatabuf[self.databuflimit] = newdata
+            except:
+                self.plotdatabuf.append(newdata)
+        else:
+            self.plotdatabuf.append(newdata)
 
 class SciSignalClass( QtCore.QObject):
     SciReceive =  QtCore.pyqtSignal()
@@ -182,10 +186,10 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.x3_checkBox.setEnabled(False)
         self.x3_low_line.setEnabled(False)
         self.x3_high_line.setEnabled(False)
-        self.hexselec_radio.setEnabled(False)
-        self.x1selec_radio.setEnabled(False)
-        self.x2selec_radio.setEnabled(False)
-        self.x3selec_radio.setEnabled(False)
+       # self.hexselec_radio.setEnabled(False)
+       # self.x1selec_radio.setEnabled(False)
+      #  self.x2selec_radio.setEnabled(False)
+       # self.x3selec_radio.setEnabled(False)
 
     def SciCloseDebugDataMenuDeal(self):
         self.x1_checkBox.setEnabled(True)
@@ -197,10 +201,10 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.x3_checkBox.setEnabled(True)
         self.x3_low_line.setEnabled(True)
         self.x3_high_line.setEnabled(True)
-        self.hexselec_radio.setEnabled(True)
-        self.x1selec_radio.setEnabled(True)
-        self.x2selec_radio.setEnabled(True)
-        self.x3selec_radio.setEnabled(True)
+       # self.hexselec_radio.setEnabled(True)
+       # self.x1selec_radio.setEnabled(True)
+        #self.x2selec_radio.setEnabled(True)
+       # self.x3selec_radio.setEnabled(True)
 
 
 
@@ -390,8 +394,6 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         else:
             self.matplot.line1.set_xdata(np.arange(self.matplot.databuflimit))
             self.matplot.line1.set_ydata(self.matplot.plotdatabuf[:self.matplot.databuflimit])
-
-
 
         self.matplot.ax.relim()
         self.matplot.ax.autoscale_view()
