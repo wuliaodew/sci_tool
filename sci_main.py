@@ -27,13 +27,14 @@ class MplCanvas(FigureCanvas):
         FigureCanvas.__init__(self, self.fig)
         FigureCanvas.setSizePolicy(self, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
+        self.databuflimit = 500
         self.line1, = self.ax.plot([],[],color = 'blue')
         self.plotdatabuf =[]
         self.ax.grid()
         self.ax.hold(False)
 
     def matplot_updatabuf(self, newdata):
-        if len(self.plotdatabuf) > 500:
+        if len(self.plotdatabuf) > self.databuflimit:
             del self.plotdatabuf[0]
 
         self.plotdatabuf.append(newdata)
@@ -66,26 +67,32 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.x2clr_button.connect(self.x2clr_button,  QtCore.SIGNAL('clicked()'), self.X2ClrButtonProcess)
         self.x3save_button.connect(self.x3save_button, QtCore.SIGNAL('clicked()'), self.X3SaveButtonProcess)
         self.x3clr_button.connect(self.x3clr_button,  QtCore.SIGNAL('clicked()'), self.X3ClrButtonProcess)
+        self.plotnum_Slider.valueChanged.connect(self.PlotNumValueChange)
 
         #用来实现波形的显示，画图
         self.matplot = MplCanvas()
         self.debug_matplot_layout.addWidget(self.matplot)
+        self.matplot.databuflimit = self.plotnum_Slider.value()#得到plot的初始化最大值
+
 
         self.recstr = str#串口接收字符串
         self.recdatacnt = 0#数据接收计数
         self.senddatacnt = 0#数据发送是计数
 
-        self.scirec_signal = SciSignalClass()#添加一个串口数据接收成功信号
-        self.scirec_signal.SciReceive.connect(self.SciWinReFresh)#产生信号连接槽
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.SciReadData)
+
+      #  self.scirec_signal = SciSignalClass()#添加一个串口数据接收成功信号
+      #  self.scirec_signal.SciReceive.connect(self.SciWinReFresh)#产生信号连接槽
       #  self.scirec_signal.connect(self.scirec_signal, QtCore.SIGNAL('SCI RECEIVE'), self.SciWinReFresh())
 
-        try:
-            self.scithread = threading.Thread(target=self.SciReadData)
-            self.scithread.setDaemon(True)
-            self.scithread.start()
-        except:
-             QtGui.QMessageBox.warning(None, '错误警告',"SCI读取线程未创建", QtGui.QMessageBox.Ok)
-             sys.exit()#创建进程异常，结束程序
+       # try:
+      #      self.scithread = threading.Thread(target=self.SciReadData)
+      #      self.scithread.setDaemon(True)
+      #      self.scithread.start()
+      #  except:
+     #        QtGui.QMessageBox.warning(None, '错误警告',"SCI读取线程未创建", QtGui.QMessageBox.Ok)
+      #       sys.exit()#创建进程异常，结束程序
 
     def SciOpenButton_Click(self):
          clickstatus = self.sciopenButton.isChecked()
@@ -108,6 +115,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                 QtGui.QMessageBox.warning(None, '端口警告',"端口无效或者不存在", QtGui.QMessageBox.Ok)
 
             if self._serial.isOpen():
+                self.timer.start(30)#30ms刷新一次界面
                 self.sciopenButton.setText("关闭")
                 self.baudratecombo.setEnabled(False)
                 self.checkbitcombo.setEnabled(False)
@@ -120,6 +128,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                 self.sciopenButton.setChecked(False)
          else:
             self._serial.close()
+            self.timer.stop()
             self.sciopenButton.setText("打开")
             self.baudratecombo.setEnabled(True)
             self.stopbitcombo.setEnabled(True)
@@ -224,32 +233,6 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             restr += hex(strargv[i])+' '
         return restr
 
-    @QtCore.pyqtSlot()#串口数据刷新槽
-    def SciWinReFresh(self):
-        if self.distext.currentIndex() == 0:
-            self.dishex.appendPlainText(self.HexShow(self.recstr))#把数据按十六进制显示
-            if self.hexselec_radio.isChecked() == True:
-                self.HexMatplotDisplay(self.recstr)
-
-            if self.dishex.toPlainText().__len__() > 100000:
-                self.dishex.clear()
-        elif self.distext.currentIndex() == 1:
-           # self.distring.moveCursor(QtGui.QTextCursor.End)
-         #   try:
-           # self.distring.insertPlainText(self.recstr.decode("utf-8"))
-            self.distring.appendPlainText(self.recstr.decode("utf-8"))
-            if self.x1_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True:
-                self.DebugDataSelecDeal(self.recstr.decode("utf-8"))
-
-            if self.distring.toPlainText().__len__() > 20000:
-                self.distring.clear()
-          #  except:
-         #       pass
-           # self.distring.appendPlainText(self.recstr.decode("utf-8"))#数据按字符格式显示
-        else:
-            pass
-
-
     def SerialSend(self,sdata):
         try:
             self.senddatacnt += self._serial.write(sdata)
@@ -336,35 +319,37 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                 if readdigital >= self.x1_low and readdigital < self.x1_high:
                     self.x1_plainTextEdit.appendPlainText(str(round(readdigital, 7)))
 
-                if self.x1selec_radio.isChecked() == True:
-                    self.matplot.matplot_updatabuf(readdigital)
-                    self.Multiplot_Refresh()
+                    if self.x1_plainTextEdit.toPlainText().__len__() > 10000:
+                        self.x1_plainTextEdit.clear()
 
-                if self.x1_plainTextEdit.toPlainText().__len__() > 10000:
-                    self.x1_plainTextEdit.clear()
+                    if self.x1selec_radio.isChecked() == True:
+                        self.matplot.matplot_updatabuf(readdigital)
+
 
 
             if self.x2_checkBox.isChecked() == True:
                 if readdigital >= self.x2_low and readdigital < self.x2_high:
                     self.x2_plainTextEdit.appendPlainText(str(round(readdigital, 7)))
 
-                if self.x2selec_radio.isChecked() == True:
-                    self.matplot.matplot_updatabuf(readdigital)
-                    self.Multiplot_Refresh()
+                    if self.x2_plainTextEdit.toPlainText().__len__() > 10000:
+                        self.x2_plainTextEdit.clear()
 
-                if self.x2_plainTextEdit.toPlainText().__len__() > 10000:
-                    self.x2_plainTextEdit.clear()
+                    if self.x2selec_radio.isChecked() == True:
+                      self.matplot.matplot_updatabuf(readdigital)
+
 
             if self.x3_checkBox.isChecked() == True:
                 if readdigital >= self.x3_low and readdigital < self.x3_high:
                     self.x3_plainTextEdit.appendPlainText(str(round(readdigital, 7)))
 
-                if self.x3selec_radio.isChecked() == True:
-                    self.matplot.matplot_updatabuf(readdigital)
-                    self.Multiplot_Refresh()
+                    if self.x3_plainTextEdit.toPlainText().__len__() > 10000:
+                        self.x3_plainTextEdit.clear()
 
-                if self.x3_plainTextEdit.toPlainText().__len__() > 10000:
-                    self.x3_plainTextEdit.clear()
+                    if self.x3selec_radio.isChecked() == True:
+                        self.matplot.matplot_updatabuf(readdigital)
+
+        if self.x1selec_radio.isChecked() == True or self.x2selec_radio.isChecked() == True or self.x3selec_radio.isChecked() == True:
+            self.Multiplot_Refresh()
 
     def X1ClrButtonProcess(self):
         self.x1_plainTextEdit.clear()
@@ -399,33 +384,57 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.Multiplot_Refresh()
 
     def Multiplot_Refresh(self):
-        self.matplot.line1.set_xdata(range(len(self.matplot.plotdatabuf)))
-        self.matplot.line1.set_ydata(self.matplot.plotdatabuf)
+        if len(self.matplot.plotdatabuf) < self.matplot.databuflimit:
+            self.matplot.line1.set_xdata(np.arange(len(self.matplot.plotdatabuf)))
+            self.matplot.line1.set_ydata(self.matplot.plotdatabuf)
+        else:
+            self.matplot.line1.set_xdata(np.arange(self.matplot.databuflimit))
+            self.matplot.line1.set_ydata(self.matplot.plotdatabuf[:self.matplot.databuflimit])
+
+
 
         self.matplot.ax.relim()
         self.matplot.ax.autoscale_view()
         self.matplot.draw()
+
+    def PlotNumValueChange(self):
+        self.plotnum_lineEdit.setText(str(self.plotnum_Slider.value()))
+        self.matplot.databuflimit = self.plotnum_Slider.value()
+
     ###############################################
     #数据接收线程
     def SciReadData(self):#deal sci data
-        while True:
-            if self.portstatus_flag == True:
-                try:
-                    bytesToRead = self._serial.inWaiting()
-                except:
-                    self.sciopenButton.setChecked(False)#出现异常，则关闭串口
-                    self.SciOpenButton_Click()
-                    bytesToRead = 0
+        if self.portstatus_flag == True:
+            try:
+                bytesToRead = self._serial.inWaiting()
+            except:
+                self.sciopenButton.setChecked(False)#出现异常，则关闭串口
+                self.SciOpenButton_Click()
+                bytesToRead = 0
 
-                if bytesToRead > 0:
-                    self.recstr = self._serial.read(bytesToRead)#读取串口数据
-                    self.recdatacnt += bytesToRead
-                    self.recnumlineEdit.setText(str(self.recdatacnt))
-                    self.scirec_signal.SciReceive.emit()#发送接收数据的信号
+            if bytesToRead > 0:
+                self.recstr = self._serial.read(bytesToRead)#读取串口数据
+                self.recdatacnt += bytesToRead
+                self.recnumlineEdit.setText(str(self.recdatacnt))
+                self.SciWinReFresh()
 
-                time.sleep(0.05)#50ms处理一次数据
-            else:
-                time.sleep(1)#位打开则没1s出来判断一次
+    def SciWinReFresh(self):
+        if self.distext.currentIndex() == 0:
+            self.dishex.appendPlainText(self.HexShow(self.recstr))#把数据按十六进制显示
+            if self.hexselec_radio.isChecked() == True:
+                self.HexMatplotDisplay(self.recstr)
+
+            if self.dishex.toPlainText().__len__() > 100000:
+                self.dishex.clear()
+        elif self.distext.currentIndex() == 1:
+            self.distring.appendPlainText(self.recstr.decode("utf-8"))
+            if self.x1_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True or self.x2_checkBox.isChecked() == True:
+                self.DebugDataSelecDeal(self.recstr.decode("utf-8"))
+
+            if self.distring.toPlainText().__len__() > 20000:
+                self.distring.clear()
+        else:
+            pass
 
 
 
