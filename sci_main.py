@@ -18,7 +18,7 @@ SERIAL_STOPBIT_ARRAY = (serial.STOPBITS_ONE, serial.STOPBITS_ONE_POINT_FIVE, ser
 #校验位
 SERIAL_CHECKBIT_ARRAY = (serial.PARITY_NONE, serial.PARITY_EVEN, serial.PARITY_ODD , serial.PARITY_MARK, serial.PARITY_SPACE)
 
-
+#matplot画图类
 class MplCanvas(FigureCanvas):
     def __init__(self):
         self.fig = Figure()
@@ -43,9 +43,6 @@ class MplCanvas(FigureCanvas):
         else:
             self.plotdatabuf.append(newdata)
 
-class SciSignalClass( QtCore.QObject):
-    SciReceive =  QtCore.pyqtSignal()
-
 class Sci_UiCtl(sci_tool.Ui_MainWindow):
     def __init__(self,MainWindow):
         super(sci_tool.Ui_MainWindow, self).__init__()
@@ -54,6 +51,8 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
 
         self.portstatus_flag = False#端口使能标志
         self._serial = serial.Serial()#init serial class
+
+        #将按键单击操作和对应的函数关联起来，这个是Qt里的写法
         self.sciopenButton.connect(self.sciopenButton, QtCore.SIGNAL('clicked()'), self.SciOpenButton_Click)#connect button click func
         self.clrcontentbutton.connect(self.clrcontentbutton, QtCore.SIGNAL('clicked()'), self.ClrButtonProcess)
         self.mainsend_Button.connect(self.mainsend_Button, QtCore.SIGNAL('clicked()'), self.MainSendButtonProcess)
@@ -83,21 +82,11 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.recdatacnt = 0#数据接收计数
         self.senddatacnt = 0#数据发送是计数
 
+        #用定时器每个一定时间去扫描有没数据收到，只要在打开串口才开始即使
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.SciReadData)
 
-      #  self.scirec_signal = SciSignalClass()#添加一个串口数据接收成功信号
-      #  self.scirec_signal.SciReceive.connect(self.SciWinReFresh)#产生信号连接槽
-      #  self.scirec_signal.connect(self.scirec_signal, QtCore.SIGNAL('SCI RECEIVE'), self.SciWinReFresh())
-
-       # try:
-      #      self.scithread = threading.Thread(target=self.SciReadData)
-      #      self.scithread.setDaemon(True)
-      #      self.scithread.start()
-      #  except:
-     #        QtGui.QMessageBox.warning(None, '错误警告',"SCI读取线程未创建", QtGui.QMessageBox.Ok)
-      #       sys.exit()#创建进程异常，结束程序
-
+    #打开串口操作
     def SciOpenButton_Click(self):
          clickstatus = self.sciopenButton.isChecked()
          if clickstatus:
@@ -118,7 +107,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             except (OSError, serial.SerialException):
                 QtGui.QMessageBox.warning(None, '端口警告',"端口无效或者不存在", QtGui.QMessageBox.Ok)
 
-            if self._serial.isOpen():
+            if self._serial.isOpen():#打开串口后失效一些可以设置的窗口
                 self.timer.start(30)#30ms刷新一次界面
                 self.sciopenButton.setText("关闭")
                 self.baudratecombo.setEnabled(False)
@@ -130,7 +119,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                 self.SciOpenDebugDataMenuDeal()
             else:
                 self.sciopenButton.setChecked(False)
-         else:
+         else:#关闭串口这使能各个窗口
             self._serial.close()
             self.timer.stop()
             self.sciopenButton.setText("打开")
@@ -142,7 +131,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
             self.portstatus_flag = False
             self.SciCloseDebugDataMenuDeal()
 
-
+    #对填写的数据做判断，看是否有问题
     def SciOpenDebugDataMenuDeal(self):
         if self.x1_checkBox.isChecked() == True:
             try:
@@ -186,10 +175,6 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.x3_checkBox.setEnabled(False)
         self.x3_low_line.setEnabled(False)
         self.x3_high_line.setEnabled(False)
-       # self.hexselec_radio.setEnabled(False)
-       # self.x1selec_radio.setEnabled(False)
-      #  self.x2selec_radio.setEnabled(False)
-       # self.x3selec_radio.setEnabled(False)
 
     def SciCloseDebugDataMenuDeal(self):
         self.x1_checkBox.setEnabled(True)
@@ -201,10 +186,6 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.x3_checkBox.setEnabled(True)
         self.x3_low_line.setEnabled(True)
         self.x3_high_line.setEnabled(True)
-       # self.hexselec_radio.setEnabled(True)
-       # self.x1selec_radio.setEnabled(True)
-        #self.x2selec_radio.setEnabled(True)
-       # self.x3selec_radio.setEnabled(True)
 
 
 
@@ -310,9 +291,9 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
 
         fname.close()
 
-
+    #思想数据的区分
     def DebugDataSelecDeal(self, p_str):
-        rec_array = re.split('\n|,| |\r',p_str)
+        rec_array = re.split('\n|,| |\r',p_str)#将数据按各种符号去分隔，得到需要的数据
         for num in rec_array:
             try:
                 readdigital = float(num)
@@ -328,8 +309,6 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
 
                     if self.x1selec_radio.isChecked() == True:
                         self.matplot.matplot_updatabuf(readdigital)
-
-
 
             if self.x2_checkBox.isChecked() == True:
                 if readdigital >= self.x2_low and readdigital < self.x2_high:
@@ -352,6 +331,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
                     if self.x3selec_radio.isChecked() == True:
                         self.matplot.matplot_updatabuf(readdigital)
 
+        #判断是否刷新画图区域
         if self.x1selec_radio.isChecked() == True or self.x2selec_radio.isChecked() == True or self.x3selec_radio.isChecked() == True:
             self.Multiplot_Refresh()
 
@@ -394,7 +374,7 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         else:
             self.matplot.line1.set_xdata(np.arange(self.matplot.databuflimit))
             self.matplot.line1.set_ydata(self.matplot.plotdatabuf[:self.matplot.databuflimit])
-
+        #更新数据后去刷新matplot界面
         self.matplot.ax.relim()
         self.matplot.ax.autoscale_view()
         self.matplot.draw()
@@ -404,21 +384,21 @@ class Sci_UiCtl(sci_tool.Ui_MainWindow):
         self.matplot.databuflimit = self.plotnum_Slider.value()
 
     ###############################################
-    #数据接收线程
+    #数据接收
     def SciReadData(self):#deal sci data
         if self.portstatus_flag == True:
             try:
-                bytesToRead = self._serial.inWaiting()
+                bytesToRead = self._serial.inWaiting()#读取缓冲区有多少数据
             except:
                 self.sciopenButton.setChecked(False)#出现异常，则关闭串口
                 self.SciOpenButton_Click()
                 bytesToRead = 0
 
-            if bytesToRead > 0:
+            if bytesToRead > 0:#大于0 ，则取出数据
                 self.recstr = self._serial.read(bytesToRead)#读取串口数据
                 self.recdatacnt += bytesToRead
                 self.recnumlineEdit.setText(str(self.recdatacnt))
-                self.SciWinReFresh()
+                self.SciWinReFresh()#根据选择，来判断数据在那个窗口刷新
 
     def SciWinReFresh(self):
         if self.distext.currentIndex() == 0:
